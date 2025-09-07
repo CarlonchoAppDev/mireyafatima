@@ -1,8 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import './App.css';
+import { loadSlim } from "tsparticles-slim";
+import Particles from "react-tsparticles";
+import { 
+  GiDiamonds, 
+  GiQueenCrown, 
+  GiPartyPopper, 
+  GiSparkles,
+  GiDress,
+  GiLargeDress,
+  GiBowTieRibbon
+} from 'react-icons/gi';
+import { 
+  BsFillHeartPulseFill, 
+  BsStars,
+  BsSuitHeart
+} from 'react-icons/bs';
+import { RiDoubleQuotesL, RiDoubleQuotesR, RiUserStarFill } from 'react-icons/ri';
+import { IoTimeSharp, IoColorPaletteSharp } from 'react-icons/io5';
 
 function App() {
   const [mostrarInvitacion, setMostrarInvitacion] = useState(false);
@@ -55,6 +73,101 @@ function App() {
     const time = parseFloat(e.target.value);
     audio.currentTime = time;
     setProgress(time);
+  };
+
+  const particlesInit = useCallback(async engine => {
+    await loadSlim(engine);
+  }, []);
+
+  const particlesOptions = {
+    fpsLimit: 120,
+    particles: {
+      number: {
+        value: 0
+      }
+    },
+    interactivity: {
+      detect_on: "window",
+      events: {
+        onHover: {
+          enable: true,
+          mode: "trail"
+        },
+        onClick: {
+          enable: true,
+          mode: "push"
+        },
+        resize: true
+      },
+      modes: {
+        trail: {
+          delay: 0,
+          quantity: 5,
+          particles: {
+            color: {
+              value: ["#FFD700", "#FFC0CB", "#FF69B4"]
+            },
+            shape: {
+              type: "star"
+            },
+            size: {
+              value: 6,
+              animation: {
+                enable: true,
+                speed: 4,
+                minimumValue: 2,
+                sync: false
+              }
+            },
+            move: {
+              enable: true,
+              speed: 3,
+              direction: "none",
+              random: true,
+              straight: false,
+              outMode: "destroy"
+            },
+            opacity: {
+              value: 0.8,
+              animation: {
+                enable: true,
+                speed: 2,
+                minimumValue: 0.1,
+                sync: false
+              }
+            }
+          }
+        },
+        push: {
+          quantity: 6,
+          particles: {
+            color: {
+              value: ["#FFD700", "#FFC0CB", "#FF69B4"]
+            },
+            shape: {
+              type: "star"
+            },
+            opacity: {
+              value: 0.8
+            },
+            size: {
+              value: 6
+            },
+            move: {
+              enable: true,
+              speed: 3,
+              direction: "none",
+              random: true
+            }
+          }
+        }
+      }
+    },
+    detectRetina: true,
+    fullScreen: {
+      enable: false,
+      zIndex: 100
+    }
   };
 
   const sliderSettings = {
@@ -146,74 +259,141 @@ function App() {
 
         {mostrarInvitacion && (
           <div className="modal-container">
+            <Particles
+              id="tsparticles"
+              className="particles"
+              init={particlesInit}
+              options={particlesOptions}
+            />
             <div className="modal-overlay" onClick={() => setMostrarInvitacion(false)}></div>
             <div className="modal-content">
-              <img src="/portada.png" alt="Portada XV" className="img-portada" />
-              <h2>Mis XV Años</h2>
-              <p className="quinceañera">Mireya Fátima</p>
-              <p className="descripcion">
-                Con la bendición de Dios y de mis padres:<br/>
-                <strong>Jimmy Rondal Torrico</strong><br/>
-                <strong>Betty Murga Laime</strong><br/>
-                Te invito a celebrar mis XV años
-              </p>
-              
-              <div className="detalles">
-                <div className="detalle-item">
-                  <i className="material-icons">event</i>
-                  <p>Domingo, 14 de Septiembre 2025</p>
-                </div>
-                <div className="detalle-item">
-                  <i className="material-icons">schedule</i>
-                  <p>17:00 hrs</p>
-                </div>
-                <div className="detalle-item">
-                  <i className="material-icons">location_on</i>
-                  <p>Salón de Eventos "Lorena"</p>
-                </div>
-                <div className="detalle-item">
-                  <i className="material-icons">map</i>
-                  <p>Av. Final América Oeste y Calle José María Velasco</p>
+              <div className="hero-image">
+                <img src="/quinceanera-foto.png" alt="Mireya Fátima" />
+                <div className="hero-text">
+                  <h1>Mis XV Años</h1>
                 </div>
               </div>
 
-              <div className="carrusel-container">
-                <Slider {...sliderSettings}>
-                  <div className="slide-item">
-                    <div className="polaroid">
-                      <img src="/princesa.png" alt="Foto 1" />
-                    </div>
-                  </div>
-                  <div className="slide-item">
-                    <div className="polaroid">
-                      <img src="/anime.png" alt="Foto 2" />
-                    </div>
-                  </div>
-                  <div className="slide-item">
-                    <div className="polaroid">
-                      <img src="/foto3.jpg" alt="Foto 3" />
-                    </div>
-                  </div>
-                </Slider>
-              </div>
+              <div className="invitation-content">
+                <div className="name-section">
+                  <h2>Mireya Fátima</h2>
+                  <p className="elegant-text">Con la bendición de Dios y mis padres:</p>
+                </div>
 
-              <div className="mapa-container">
-                <iframe
-                  title="Ubicación"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d951.9652392069005!2d-66.18829715166989!3d-17.37042239669241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e3745fb23e0c01%3A0x3453c864bc1f32d4!2sSal%C3%B3n%20de%20Eventos%20%22Lorena%22!5e0!3m2!1ses-419!2sbo!4v1757033085977!5m2!1ses-419!2sbo"
-                  style={{ border: 0, borderRadius: '12px' }}
-                  allowFullScreen=""
-                  loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
-                ></iframe>
-                <a
-                  href="https://maps.app.goo.gl/vK5E6ZSH3M4tW3VWA"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-mapa"
-                >
-                  Cómo llegar
-                </a>
+                <div className="parents-section">
+                  <div className="parent">
+                    <span className="parent-label">Papá</span>
+                    <h3>Jimmy Rondal Torrico</h3>
+                  </div>
+                  <div className="parent">
+                    <span className="parent-label">Mamá</span>
+                    <h3>Betty Murga Laime</h3>
+                  </div>
+                </div>
+
+                <div className="invitation-text">
+                  <p>Te invito a celebrar</p>
+                  <h2>Mis XV Años</h2>
+                </div>
+
+                <div className="details-section">
+                  <div className="detail-item">
+                    <i className="fas fa-calendar"></i>
+                    <p>Domingo, 14 de Septiembre 2025</p>
+                  </div>
+                  <div className="detail-item">
+                    <i className="fas fa-clock"></i>
+                    <p>17:00 hrs</p>
+                  </div>
+                  <div className="detail-item">
+                    <i className="fas fa-map-marker-alt"></i>
+                    <p>Salón de Eventos "Lorena"<br/>
+                    Av. Final América Oeste y Calle José María Velasco</p>
+                  </div>
+                </div>
+
+                <div className="quote-section">
+                  <div className="quote-icons-container">
+                    <div className="quote-icons quote-icons-left">
+                      <RiDoubleQuotesL className="quote-mark" />
+                    </div>
+                    <p className="quote-text">
+                      "Hoy cumplo quince años y mi corazón se llena de alegría al compartir este momento tan especial contigo. 
+                      Cada sueño, cada sonrisa y cada paso que doy está lleno de ilusión por este nuevo capítulo en mi vida."
+                    </p>
+                    <div className="quote-icons quote-icons-right">
+                      <RiDoubleQuotesR className="quote-mark" />
+                    </div>
+                  </div>
+                </div>
+
+                <div className="dress-code-section">
+                  <div className="section-title">
+                    <GiQueenCrown className="animated-icon crown floating-crown" />
+                    <h3>Código de Vestimenta</h3>
+                    <GiQueenCrown className="animated-icon crown floating-crown-reverse" />
+                  </div>
+                  <div className="dress-code-content">
+                    <div className="dress-code-item">
+                      <div className="icon-group">
+                        <img src="/ropa-formal.png" alt="Código de vestimenta" className="dress-code-icon" />
+                      </div>
+                      <p>Damas: Vestido de gala<br/>Caballeros: Traje formal</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="gallery-section">
+                  <div className="carrusel-container">
+                    <Slider {...sliderSettings}>
+                      <div className="slide-item">
+                        <div className="polaroid">
+                          <img src="/princesa.png" alt="Foto 1" />
+                        </div>
+                      </div>
+                      <div className="slide-item">
+                        <div className="polaroid">
+                          <img src="/anime.png" alt="Foto 2" />
+                        </div>
+                      </div>
+                      <div className="slide-item">
+                        <div className="polaroid">
+                          <img src="/foto3.png" alt="Foto 3" />
+                        </div>
+                      </div>
+                      <div className="slide-item">
+                        <div className="polaroid">
+                          <img src="/portada.png" alt="Foto 4" />
+                        </div>
+                      </div>
+                    </Slider>
+                  </div>
+                </div>
+
+                <div className="location-section">
+                  <div className="mapa-container">
+                    <iframe
+                      title="Ubicación"
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d951.9652392069005!2d-66.18829715166989!3d-17.37042239669241!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e3745fb23e0c01%3A0x3453c864bc1f32d4!2sSal%C3%B3n%20de%20Eventos%20%22Lorena%22!5e0!3m2!1ses-419!2sbo!4v1757033085977!5m2!1ses-419!2sbo"
+                      style={{ border: 0, borderRadius: '12px' }}
+                      allowFullScreen=""
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                    <a
+                      href="https://maps.app.goo.gl/vK5E6ZSH3M4tW3VWA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn-mapa"
+                    >
+                      Cómo llegar
+                    </a>
+                  </div>
+                </div>
+
+                <div className="footer-text">
+                  <p>¡Te espero para compartir este momento tan especial!</p>
+                </div>
               </div>
 
               <button 
